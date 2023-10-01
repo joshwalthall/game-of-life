@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+}
+
+#page-container {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 17rem 1fr;
+    grid-template-rows: 5rem 1fr 2rem;
+}
+
+header {
+    grid-area: 1 / 1 / 2 / 3;
+    background-color: dimgray;
+}
+
+#sidebar-container {
+    grid-area: 2 / 1 / 4 / 2;
+    background-color: darkcyan;
+}
+
+#game-container {
+    grid-area: 2 / 2 / 3 / 3;
+    background-color: #F0F0F0;
+}
+
+footer {
+    grid-area: 3 / 2 / 4 / 3;
+    background-color: #333333;
+}
