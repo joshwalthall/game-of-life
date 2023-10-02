@@ -1,3 +1,8 @@
+:root {
+    --alive-color: white;
+    --dead-color: black;
+}
+
 body {
     margin: 0;
 }
@@ -20,8 +25,13 @@ header {
 }
 
 #game-container {
+    padding: 50px;
     grid-area: 2 / 2 / 3 / 3;
-    background-color: #F0F0F0;
+    background-color: silver;
+}
+
+#grid-container {
+    display: grid;
 }
 
 footer {
