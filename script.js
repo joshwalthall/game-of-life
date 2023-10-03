@@ -1,20 +1,25 @@
 const aliveColor = '#FFFFFF';
 const deadColor = '#000000';
 const hoverColor = '#808080'
+const neighborTranslations = [[-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1]];
 
 let gridCount = 64; // Number of x and y grid squares
 let gridContainerSize = 800; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`;
-console.log(`Grid Tile Size = ${gridTileSize}`);
+let minSurvival = 2;
+let maxSurvival = 3;
+let minBirth = 3;
+let maxBirth = 3;
 
 const gridContainer = document.querySelector('#grid-container');
 
 const CellFactory = (cellTile, xPos, yPos) => {
     const tile = cellTile;
+    const positionX = xPos;
+    const positionY = yPos;
+    const position = [positionX, positionY];
     let isAlive = false;
-    const xPosition = xPos;
-    const yPosition = yPos;
-    const position = [xPosition, yPosition];
+    let liveNeighborCount = 0;
 
     const _live = () => {
         isAlive = true;
@@ -39,6 +44,18 @@ const CellFactory = (cellTile, xPos, yPos) => {
     const getPosition = () => {
         return position;
     };
+    const countLiveNeighbors = () => {
+        for (i = 0; i < 8; i++) {
+            let neighborTranslate = neighborTranslations[i];
+            let neighborPosX = (positionX + neighborTranslate[0]);
+            let neighborPosY = (positionY + neighborTranslate[1]);
+            let neighborTile = document.querySelectorAll(
+                `[data-position-x='${neighborPosX}'][data-position-y='${neighborPosY}']`
+            )[0];
+            console.log(neighborTile);
+            console.log(`Neighbor ${i} Alive = ${neighborTile.dataset.isAlive}`);
+        };
+    };
     const swapState = () => {
         if (isAlive === true) {
             _die();
@@ -50,7 +67,7 @@ const CellFactory = (cellTile, xPos, yPos) => {
         _setTileColor();
     };
 
-    return {isAlive, getPosition, mouseEnter, mouseLeave, swapState};
+    return {isAlive, getPosition, mouseEnter, mouseLeave, countLiveNeighbors, swapState};
 };
 
 function createGameGrid() {
@@ -72,11 +89,12 @@ function createGameGrid() {
             cellTile.dataset.isAlive = 'false';
             cellTile.style.backgroundColor = deadColor;
             cellTile.dataset.isAlive = `${newCell.isAlive}`;
-            cellTile.dataset.xPosition = `${cellPosition[0]}`;
-            cellTile.dataset.yPosition = `${cellPosition[1]}`;
+            cellTile.dataset.positionX = `${cellPosition[0]}`;
+            cellTile.dataset.positionY = `${cellPosition[1]}`;
             cellTile.addEventListener('mouseenter', newCell.mouseEnter);
             cellTile.addEventListener('mouseleave', newCell.mouseLeave);
             cellTile.addEventListener('mousedown', newCell.swapState);
+            cellTile.addEventListener('mousedown', newCell.countLiveNeighbors);
             gridContainer.appendChild(cellTile);
         };
     };
