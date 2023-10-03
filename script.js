@@ -45,6 +45,7 @@ const CellFactory = (cellTile, xPos, yPos) => {
         return position;
     };
     const countLiveNeighbors = () => {
+        liveNeighborCount = 0;
         for (i = 0; i < 8; i++) {
             let neighborTranslate = neighborTranslations[i];
             let neighborPosX = (positionX + neighborTranslate[0]);
@@ -52,9 +53,11 @@ const CellFactory = (cellTile, xPos, yPos) => {
             let neighborTile = document.querySelectorAll(
                 `[data-position-x='${neighborPosX}'][data-position-y='${neighborPosY}']`
             )[0];
-            console.log(neighborTile);
-            console.log(`Neighbor ${i} Alive = ${neighborTile.dataset.isAlive}`);
+            if (neighborTile.dataset.isAlive === "true") {
+                liveNeighborCount += 1;
+            };
         };
+        console.log(`Live Neighbors: ${liveNeighborCount}`);
     };
     const swapState = () => {
         if (isAlive === true) {
