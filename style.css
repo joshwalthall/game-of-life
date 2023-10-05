@@ -34,6 +34,25 @@ header {
     display: grid;
 }
 
+
+
+/* It looks like maybe the reason this was giving you some trouble is because the styles being applied by the dom were taking priority over ones applied by css, but adding !important lets it take precedence again specifically for when its being hovered. */
+/* Another thing we could look at if you wanted to eliminate the !important tag would be to give the cell-tile an .alive or .dead class name depending on its state and color it based on those using css. */
+/* I've put this in the commented code on the script.js and below in case that's the route you want to take. Basically it would be removing lines 32, 35, and 89, but adding 33 and 36 on the script.js, and then uncommenting out 43-49 here in the css and removing !important. */
+
+/* .cell-tile {
+    background-color:black;
+}
+
+.is-alive {
+    background-color: white;
+} */
+
+.cell-tile:hover {
+    background-color: #808080 !important;
+}
+
+
 footer {
     grid-area: 3 / 2 / 4 / 3;
     background-color: #333333;

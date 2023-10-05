@@ -1,6 +1,6 @@
 const aliveColor = '#FFFFFF';
 const deadColor = '#000000';
-const hoverColor = '#808080'
+// const hoverColor = '#808080'
 const neighborTranslations = [[-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1]];
 
 let gridCount = 64; // Number of x and y grid squares
@@ -30,17 +30,13 @@ const CellFactory = (cellTile, xPos, yPos) => {
     const _setTileColor = () => {
         if (isAlive) {
             tile.style.backgroundColor = aliveColor;
+            // tile.classList.add('is-alive')
         } else if (!isAlive) {
             tile.style.backgroundColor = deadColor;
+            // tile.classList.remove('is-alive')
         };
     };
 
-    const mouseEnter = () => {
-        tile.style.backgroundColor = hoverColor;
-    };
-    const mouseLeave = () => {
-        _setTileColor();
-    };
     const getPosition = () => {
         return position;
     };
@@ -70,7 +66,7 @@ const CellFactory = (cellTile, xPos, yPos) => {
         _setTileColor();
     };
 
-    return {isAlive, getPosition, mouseEnter, mouseLeave, countLiveNeighbors, swapState};
+    return {isAlive, getPosition, countLiveNeighbors, swapState};
 };
 
 function createGameGrid() {
@@ -94,8 +90,6 @@ function createGameGrid() {
             cellTile.dataset.isAlive = `${newCell.isAlive}`;
             cellTile.dataset.positionX = `${cellPosition[0]}`;
             cellTile.dataset.positionY = `${cellPosition[1]}`;
-            cellTile.addEventListener('mouseenter', newCell.mouseEnter);
-            cellTile.addEventListener('mouseleave', newCell.mouseLeave);
             cellTile.addEventListener('mousedown', newCell.swapState);
             cellTile.addEventListener('mousedown', newCell.countLiveNeighbors);
             gridContainer.appendChild(cellTile);
