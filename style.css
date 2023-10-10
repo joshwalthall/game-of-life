@@ -1,6 +1,7 @@
 :root {
     --alive-color: white;
     --dead-color: black;
+    --hover-color: #808080;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
 #page-container {
     display: grid;
     height: 100vh;
-    grid-template-columns: 17rem 1fr;
+    grid-template-columns: 10rem 1fr;
     grid-template-rows: 4rem 1fr 2rem;
 }
 
@@ -20,6 +21,7 @@ header {
 }
 
 #sidebar-container {
+    padding: 30px;
     grid-area: 2 / 1 / 4 / 2;
     background-color: darkcyan;
 }
@@ -32,6 +34,18 @@ header {
 
 #grid-container {
     display: grid;
+}
+
+.cell-tile.alive {
+    background-color: var(--alive-color);
+}
+
+.cell-tile.dead {
+    background-color: var(--dead-color);
+}
+
+.cell-tile:hover {
+    background-color: var(--hover-color);
 }
 
 footer {
