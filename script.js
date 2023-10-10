@@ -11,11 +11,13 @@ let maxBirth = 3;
 const gridContainer = document.querySelector('#grid-container');
 const tickButton = document.querySelector('#tick-button');
 const playButton = document.querySelector('#play-button');
+const stopButton = document.querySelector('#stop-button');
 
 const GameFactory = () => {
     const states = ["paused", "running"];
     let state = states[0];
     let cells = [];
+    let timer = 0;
 
     const createGameGrid = () => {
         // Set grid container rows and columns amounts and sizes
@@ -35,8 +37,6 @@ const GameFactory = () => {
                 cellTile.classList.add('dead');
                 cellTile.dataset.positionX = `${cellPosition[0]}`;
                 cellTile.dataset.positionY = `${cellPosition[1]}`;
-                cellTile.addEventListener('mouseenter', newCell.mouseEnter);
-                cellTile.addEventListener('mouseleave', newCell.mouseLeave);
                 cellTile.addEventListener('mousedown', newCell.swapState);
                 cellTile.addEventListener('mousedown', newCell.countLiveNeighbors);
                 gridContainer.appendChild(cellTile);
@@ -55,10 +55,15 @@ const GameFactory = () => {
     };
     // Added autoplay button interval function
     const play = () => {
-        setInterval(game.tick, 100)
+        timer = setInterval(game.tick, 600);
+    };
+    // Added stop button to stop the autoplay
+    const stop = () => {
+        clearInterval(timer);
+        timer = 0;
     };
 
-    return {cells, createGameGrid, tick, play};
+    return {cells, createGameGrid, tick, play, stop};
 };
 
 const CellFactory = (cellTile, xPos, yPos) => {
@@ -149,3 +154,5 @@ game.createGameGrid();
 tickButton.addEventListener('click', game.tick);
 // Added autoplay button interval function
 playButton.addEventListener('click', game.play);
+// Add event listener for stop button
+stopButton.addEventListener('click', game.stop);
