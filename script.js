@@ -10,6 +10,7 @@ let maxBirth = 3;
 
 const gridContainer = document.querySelector('#grid-container');
 const tickButton = document.querySelector('#tick-button');
+const playButton = document.querySelector('#play-button');
 
 const GameFactory = () => {
     const states = ["paused", "running"];
@@ -52,8 +53,12 @@ const GameFactory = () => {
         cells.forEach(getNextCellState);
         cells.forEach(setNextCellState);
     };
+    // Added autoplay button interval function
+    const play = () => {
+        setInterval(game.tick, 100)
+    };
 
-    return {cells, createGameGrid, tick};
+    return {cells, createGameGrid, tick, play};
 };
 
 const CellFactory = (cellTile, xPos, yPos) => {
@@ -142,3 +147,5 @@ const CellFactory = (cellTile, xPos, yPos) => {
 const game = GameFactory();
 game.createGameGrid();
 tickButton.addEventListener('click', game.tick);
+// Added autoplay button interval function
+playButton.addEventListener('click', game.play);
