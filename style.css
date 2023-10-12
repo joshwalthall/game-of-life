@@ -1,7 +1,6 @@
 :root {
     --alive-color: white;
     --dead-color: black;
-    --hover-color: #808080;
 }
 
 body {
@@ -42,10 +41,6 @@ header {
 
 .cell-tile.dead {
     background-color: var(--dead-color);
-}
-
-.cell-tile:hover {
-    background-color: var(--hover-color);
 }
 
 footer {

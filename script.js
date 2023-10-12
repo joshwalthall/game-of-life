@@ -1,12 +1,23 @@
-const neighborTranslations = [[-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1]];
+const neighborTranslations = [
+    [-1,-1],
+    [0,-1],
+    [1,-1],
+    [-1,0],
+    [1,0],
+    [-1,1],
+    [0,1],
+    [1,1],
+];
 
-let gridCount = 32; // Number of x and y grid squares
+let gridCount = 128; // Number of x and y grid squares
 let gridContainerSize = 800; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`;
+let lifeChance = 0.2;
 let minSurvival = 2;
 let maxSurvival = 3;
 let minBirth = 3;
 let maxBirth = 3;
+let tickRate = 250; // Time in ms between each tick
 
 const gridContainer = document.querySelector('#grid-container');
 const tickButton = document.querySelector('#tick-button');
@@ -14,139 +25,109 @@ const playButton = document.querySelector('#play-button');
 const stopButton = document.querySelector('#stop-button');
 
 const GameFactory = () => {
-    const states = ["paused", "running"];
-    let state = states[0];
-    let cells = [];
+    const gameStates = ["paused", "running"];
+    let gameState = gameStates[0];
+    let gridRows = [];
     let timer = 0;
 
     const createGameGrid = () => {
         // Set grid container rows and columns amounts and sizes
         gridContainer.style.gridTemplateRows = `repeat(${gridCount}, ${gridTileSize})`;
         gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, ${gridTileSize})`;
+        gridRows = [];
         // Iterate through each row
         for (y = 1; y <= gridCount; y++) {
+            let gridRow = [];
             for (x = 1; x <= gridCount; x++) {
                 let cellTile = document.createElement('div');
-                let newCell = CellFactory(cellTile, x,y);
-                cells.push(newCell);
-                let cellPosition = newCell.getPosition();
+                let gridValue = [cellTile];
                 cellTile.style.gridArea = `${y} / ${x} / ${y+1} / ${x+1}`;
                 cellTile.style.width = gridTileSize;
                 cellTile.style.height = gridTileSize;
                 cellTile.classList.add('cell-tile');
-                cellTile.classList.add('dead');
-                cellTile.dataset.positionX = `${cellPosition[0]}`;
-                cellTile.dataset.positionY = `${cellPosition[1]}`;
-                cellTile.addEventListener('mousedown', newCell.swapState);
-                cellTile.addEventListener('mousedown', newCell.countLiveNeighbors);
+                let randomNumber = Math.random();
+                if (randomNumber > lifeChance) {
+                    cellTile.classList.add('dead');
+                    gridValue.push(0);
+                } else if (randomNumber <= lifeChance) {
+                    cellTile.classList.add('alive');
+                    gridValue.push(1);
+                };
                 gridContainer.appendChild(cellTile);
+                gridRow.push(gridValue);
             };
+            gridRows.push(gridRow);
         };
     };
-    const getNextCellState = (cell) => {
-        cell.getNextAliveState();
-    };
-    const setNextCellState = (cell) => {
-        cell.setNextAliveState();
-    };
-    const tick = () => {
-        cells.forEach(getNextCellState);
-        cells.forEach(setNextCellState);
-    };
-    // Added autoplay button interval function
-    const play = () => {
-        timer = setInterval(game.tick, 600);
-    };
-    // Added stop button to stop the autoplay
-    const stop = () => {
-        clearInterval(timer);
-        timer = 0;
-    };
-
-    return {cells, createGameGrid, tick, play, stop};
-};
-
-const CellFactory = (cellTile, xPos, yPos) => {
-    const tile = cellTile;
-    const positionX = xPos;
-    const positionY = yPos;
-    const position = [positionX, positionY];
-    let isAlive = false;
-    let nextAliveState = false;
-
-    const _live = () => {
-        isAlive = true;
-        tile.classList.remove('dead');
-        tile.classList.add('alive');
-    };
-    const _die = () => {
-        isAlive = false;
-        tile.classList.remove('alive');
-        tile.classList.add('dead');
-    };
-    const _countLiveNeighbors = () => {
+    const _countLiveNeighbors = (rowPos, colPos) => {
         let liveNeighbors = 0;
-        for (i = 0; i < 8; i++) {
-            let neighborTranslate = neighborTranslations[i];
-            let neighborPosX = (positionX + neighborTranslate[0]);
-            if (neighborPosX === 0) {
-                neighborPosX = gridCount;
-            } else if (neighborPosX === (gridCount + 1)) {
-                neighborPosX = 1;
-            };
-            let neighborPosY = (positionY + neighborTranslate[1]);
-            if (neighborPosY === 0) {
-                neighborPosY = gridCount;
-            } else if (neighborPosY === (gridCount + 1)) {
-                neighborPosY = 1;
-            };
-            let neighborTile = document.querySelectorAll(
-                `[data-position-x='${neighborPosX}'][data-position-y='${neighborPosY}']`
-            )[0];
-            if (neighborTile.classList.contains("alive")) {
-                liveNeighbors += 1;
-            };
+        for (t = 0; t < neighborTranslations.length; t++) {
+            translation = neighborTranslations[t]; // Get translation value by index
+            transRowPos = (rowPos + translation[0]); // Get translated row position
+            if (transRowPos === gridCount) {transRowPos = 0;}; // Y axis wraparound
+            transColPos = (colPos + translation[1]); // Get translated column position
+            if (transColPos === gridCount) {transColPos = 0;}; // X axis wraparound
+            neighborCell = gridRows.at(transRowPos).at(transColPos);
+            aliveState = neighborCell[1];
+            liveNeighbors += aliveState;
         };
         return liveNeighbors;
     };
-    const getPosition = () => {
-        return position;
+    const _getNextCellState = (currState, liveNeighbors) => {
+        let nextState = 0;
+        if (currState === 1 && liveNeighbors >= minSurvival && liveNeighbors <= maxSurvival) {
+            nextState = 1;
+        } else if (currState === 0 && liveNeighbors >= minBirth && liveNeighbors <= maxBirth) {
+            nextState = 1;
+        };
+        return nextState;
     };
-    const getAliveState = () => {
-        return isAlive;
-    };
-    const getNextAliveState = () => {
-        _countLiveNeighbors();
-        let liveNeighbors = _countLiveNeighbors();
-        if (isAlive === true && liveNeighbors >= minSurvival && liveNeighbors <= maxSurvival) {
-            nextAliveState = true;
-        } else if (isAlive === false && liveNeighbors >= minBirth && liveNeighbors <= maxBirth) {
-            nextAliveState = true;
-        } else {
-            nextAliveState = false;
+    const tick = () => {
+        let nextStateRows = [];
+        for (y = 0; y < gridCount; y++) {
+            let gridRow = gridRows[y]; // Get row by grid y index
+            let nextStateRow = [];
+            for (x = 0; x < gridCount; x++) {
+                let cell = gridRow[x]; // Get cell by row x index
+                let currState = cell[1];
+                let liveNeighbors = _countLiveNeighbors(y, x);
+                let nextCellState = _getNextCellState(currState, liveNeighbors);
+                nextStateRow.push(nextCellState);
+            };
+            nextStateRows.push(nextStateRow);
+        };
+        for (y = 0; y < gridCount; y++) {
+            for (x = 0; x < gridCount; x++) {
+                let gridRow = gridRows.at(y);
+                let cellArray = gridRow.at(x);
+                let cell = cellArray[0];
+                let currCellState = cellArray[1];
+                let nextCellState = nextStateRows[y][x];
+                if (currCellState === 1 && nextCellState === 0) {
+                    cell.classList.remove('alive');
+                    cell.classList.add('dead');
+                    cellArray[1] = nextCellState;
+                } else if (currCellState === 0 && nextCellState === 1) {
+                    cell.classList.remove('dead');
+                    cell.classList.add('alive');
+                    cellArray[1] = nextCellState;
+                };
+            };
         };
     };
-    const setNextAliveState = () => {
-        if (isAlive === false && nextAliveState === true) {
-            _live();
-        } else if (isAlive === true && nextAliveState === false) {
-            _die();
+    // Added autoplay button interval function
+    const play = () => {
+        timer = setInterval(game.tick, tickRate);
+    };
+    // Added stop button to stop the autoplay
+    const stop = () => {
+        if (timer !== 0) {
+        clearInterval(timer);
+        timer = 0;
         };
     };
-    const swapState = () => {
-        if (isAlive === true) {
-            _die();
-        } else if (isAlive === false)  {
-            _live();
-        };
-    };
-    return {
-        getPosition,
-        getAliveState,
-        getNextAliveState,
-        setNextAliveState,
-        swapState
-    };
+
+    return {gridRows, createGameGrid, tick, play, stop};
 };
 
 const game = GameFactory();
