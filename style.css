@@ -3,6 +3,7 @@
     --base-color: #F9F6F0;
     --main-color: #A17B6A;
     --main-color-light: #C6A799;
+    --main-color-lighter: #DEBBAC;
     --main-color-dark: #816355;
     --pop-color: #CFEC84;
     --pop-color-light: #DFFC94;
@@ -78,7 +79,7 @@ body {
     height: 100vh;
     background-color: var(--base-color);
     display: grid;
-    grid-template-columns: minmax(250px, 300px) 1fr;
+    grid-template-columns: minmax(250px, 600px) 1fr;
     grid-template-rows: 75px max-content max-content 1fr;
 }
 
@@ -100,7 +101,7 @@ header {
 .header-title {
     grid-area: 1 / 1 / 3 / 2;
     align-self: center;
-    font-size: 2rem;
+    font-size: 2.3rem;
     font-weight: 700;
 }
 
@@ -116,19 +117,58 @@ header {
 
 #sidebar-container {
     padding: 30px;
-    margin-left: 12px;
-    box-shadow: inset 0px 10px 5px -5px var(--main-color-dark);
+    margin-left: 15px;
+    height: max-content;
+    border: 3px var(--main-color-lighter);
+    border-top-width: 0px;
+    border-style: outset;
     border-radius: 0px 0px 7px 7px;
+    box-shadow: inset 0px 10px 5px -5px var(--main-color-dark);
     grid-area: 2 / 1 / 3 / 2;
     background-color: var(--main-color-light);
 }
 
+#sidebar-title {
+    color: var(--base-color-opposite);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.sidebar-text {
+    color: var(--base-color-opposite);
+}
+
+#game-container {
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: var(--base-color-opposite);
+    grid-area: 2 / 2 / 3 / 3;
+    justify-self: start;
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    grid-template-columns: max-content;
+}
+
+#grid-container {
+    display: grid;
+}
+
+.cell-tile.alive {
+    background-color: var(--alive-color);
+}
+
+.cell-tile.dead {
+    background-color: var(--dead-color);
+}
+
 #buttons-container {
-    padding: 10px 0px 15px 0px;
-    grid-area: 3 / 2 / 4 / 3;
+    padding-top: 10px;
     display: grid;
     grid-template-columns: 1fr max-content max-content max-content 1fr;
     gap: 20px;
+    justify-self: center;
+    align-self: center;
 }
 
 button {
@@ -163,27 +203,6 @@ button:active {
 
 #stop-button {
     grid-area: 1/ 4 / 2 / 5;
-}
-
-#game-container {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    background-color: var(--base-color-opposite);
-    grid-area: 2 / 2 / 3 / 3;
-    justify-self: center;
-}
-
-#grid-container {
-    display: grid;
-}
-
-.cell-tile.alive {
-    background-color: var(--alive-color);
-}
-
-.cell-tile.dead {
-    background-color: var(--dead-color);
 }
 
 footer {

@@ -19,21 +19,38 @@
     </header>
     
     <div id="sidebar-container">
-      
+      <div id="sidebar-title">What's going on here?</div>
+      <p class="sidebar-text">What you see on the right is an implementation of
+        <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">
+          Conway's Game of Life
+        </a>, or just "Life" for short.
+      </p>
+      <p class="sidebar-text">
+        It's a type of <a href="https://en.wikipedia.org/wiki/Cellular_automaton">cellular automata</a>,
+        which basically just means a grid of cells that are either alive or dead based on
+        certain rules. For every "tick" in the cycle, each cell will either live or die depending
+        upon how many alive or dead cells surround it.
+      </p>
+      <p class="sidebar-text">
+        There are many different types of cellular automata, even ones that can be
+        simulated by hand with pen and paper. It's an interesting way to explore and
+        think about the way that organisms grow and procreate in nature. Cellular
+        automata have also been used for lots of interesting things such as
+        level generation in video games.
+      </p>
     </div>
     
     <div id="game-container">
       <div id="grid-container"></div>
+      <div id="buttons-container">
+        <button id="tick-button">Tick</button>
+        <!--  Added autoplay button interval function -->
+        <button id="play-button">Autoplay</button>
+        <!-- Added stop button to stop the autoplay -->
+        <button id="stop-button">Stop</button>
+      </div>
     </div>
-
-    <div id="buttons-container">
-      <button id="tick-button">Tick</button>
-      <!--  Added autoplay button interval function -->
-      <button id="play-button">Autoplay</button>
-      <!-- Added stop button to stop the autoplay -->
-      <button id="stop-button">Stop</button>
-    </div>
-    
+  
     <footer>
       Footer Content
     </footer>
