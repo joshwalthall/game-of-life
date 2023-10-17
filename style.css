@@ -193,10 +193,6 @@ button:active {
     background-color: var(--pop-color);
 }
 
-#tick-button {
-    grid-area: 1 / 2 / 2 / 3;
-}
-
 #play-button {
     grid-area: 1 / 3 / 2 / 4;
 }

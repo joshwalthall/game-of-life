@@ -17,10 +17,9 @@ let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
 let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
-let tickRate = 50; // Time in ms between each tick
+let tickRate = 100; // Time in ms between each tick
 
 const gridContainer = document.querySelector('#grid-container');
-const tickButton = document.querySelector('#tick-button');
 const playButton = document.querySelector('#play-button');
 const stopButton = document.querySelector('#stop-button');
 
@@ -82,7 +81,7 @@ const GameFactory = () => {
         };
         return nextState;
     };
-    const tick = () => {
+    const _tick = () => {
         let nextStateRows = [];
         for (y = 0; y < gridCount; y++) {
             let gridRow = gridRows[y]; // Get row by grid y index
@@ -115,13 +114,11 @@ const GameFactory = () => {
             };
         };
     };
-    // Added autoplay button interval function
     const play = () => {
         if (timer === 0) {
-            timer = setInterval(game.tick, tickRate);
+            timer = setInterval(_tick, tickRate);
         };
     };
-    // Added stop button to stop the autoplay
     const stop = () => {
         if (timer !== 0) {
         clearInterval(timer);
@@ -129,12 +126,11 @@ const GameFactory = () => {
         };
     };
 
-    return {gridRows, createGameGrid, tick, play, stop};
+    return {gridRows, createGameGrid, play, stop};
 };
 
 const game = GameFactory();
 game.createGameGrid();
-tickButton.addEventListener('click', game.tick);
 // Added autoplay button interval function
 playButton.addEventListener('click', game.play);
 // Add event listener for stop button
