@@ -17,7 +17,7 @@ let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
 let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
-let tickRate = 200; // Time in ms between each tick
+let tickRate = 50; // Time in ms between each tick
 
 const gridContainer = document.querySelector('#grid-container');
 const tickButton = document.querySelector('#tick-button');
@@ -117,7 +117,9 @@ const GameFactory = () => {
     };
     // Added autoplay button interval function
     const play = () => {
-        timer = setInterval(game.tick, tickRate);
+        if (timer === 0) {
+            timer = setInterval(game.tick, tickRate);
+        };
     };
     // Added stop button to stop the autoplay
     const stop = () => {
