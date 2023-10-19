@@ -24,13 +24,12 @@ let generationNumber = 0; // Increments with each tick
 
 const generationCounter = document.querySelector('#generation-counter');
 const gridContainer = document.querySelector('#grid-container');
+const startStopButton = document.querySelector('#start-stop-button');
 const playButton = document.querySelector('#play-button');
 const stopButton = document.querySelector('#stop-button');
 const tickRateSlider = document.querySelector('#tick-rate');
 
 const GameFactory = () => {
-    const gameStates = ["paused", "running"];
-    let gameState = gameStates[0];
     let gridRows = [];
     let timer = 0;
 
@@ -121,32 +120,39 @@ const GameFactory = () => {
         generationNumber++;
         generationCounter.textContent = generationNumber.toLocaleString();
     };
-    const play = () => {
+    const _play = () => {
         if (timer === 0) {
             timer = setInterval(_tick, tickRate);
         };
     };
-    const stop = () => {
+    const _stop = () => {
         if (timer !== 0) {
         clearInterval(timer);
         timer = 0;
         };
     };
+    const startStop = () => {
+        if (timer === 0) {
+            _play();
+            startStopButton.textContent = 'Stop';
+        } else if (timer !== 0) {
+            _stop();
+            startStopButton.textContent = 'Start';
+        }
+    };
     const changeTickRate = () => {
         tickRateReductor = tickRateSlider.value;
         tickRate = (tickRateBase - tickRateReductor);
         if (timer !== 0) {
-            stop();
-            play();
+            _stop();
+            _play();
         };
-        console.log(`tickRate changed to ${tickRate}`);
     }
 
-    return {gridRows, createGameGrid, play, stop, changeTickRate};
+    return {gridRows, createGameGrid, startStop, changeTickRate};
 };
 
 const game = GameFactory();
 game.createGameGrid();
-playButton.addEventListener('click', game.play);
-stopButton.addEventListener('click', game.stop);
+startStopButton.addEventListener('click', game.startStop)
 tickRateSlider.addEventListener('input', game.changeTickRate);
