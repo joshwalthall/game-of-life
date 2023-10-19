@@ -20,7 +20,9 @@ let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
 const tickRateBase = 600 // Base from which tickRate will be subtracted
 let tickRateReductor = 250 // Amount to reduce tickRateBase by to get tickRate
 let tickRate = (tickRateBase - tickRateReductor); // Time in ms between each tick
+let generationNumber = 0; // Increments with each tick
 
+const generationCounter = document.querySelector('#generation-counter');
 const gridContainer = document.querySelector('#grid-container');
 const playButton = document.querySelector('#play-button');
 const stopButton = document.querySelector('#stop-button');
@@ -116,6 +118,8 @@ const GameFactory = () => {
                 };
             };
         };
+        generationNumber++;
+        generationCounter.textContent = generationNumber;
     };
     const play = () => {
         if (timer === 0) {
@@ -135,6 +139,7 @@ const GameFactory = () => {
             stop();
             play();
         };
+        console.log(`tickRate changed to ${tickRate}`);
     }
 
     return {gridRows, createGameGrid, play, stop, changeTickRate};

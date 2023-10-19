@@ -152,8 +152,15 @@ header {
     grid-area: game-container;
     justify-self: start;
     display: grid;
+    gap: 10px;
     grid-template-rows: max-content 1fr;
     grid-template-columns: max-content;
+}
+
+#generation-container {
+    color: var(--base-color);
+    font-size: 1.2rem;
+    justify-self: center;
 }
 
 #grid-container {
@@ -169,7 +176,6 @@ header {
 }
 
 #buttons-container {
-    padding-top: 10px;
     display: grid;
     grid-template-columns: 1fr max-content max-content max-content 1fr;
     gap: 20px;
