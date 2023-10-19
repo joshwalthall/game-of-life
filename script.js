@@ -119,7 +119,7 @@ const GameFactory = () => {
             };
         };
         generationNumber++;
-        generationCounter.textContent = generationNumber;
+        generationCounter.textContent = generationNumber.toLocaleString();
     };
     const play = () => {
         if (timer === 0) {
