@@ -20,13 +20,13 @@
     
     <div id="sidebar-container">
       <div id="sidebar-title">What's going on here?</div>
-      <p class="sidebar-text">What you see on the right is an implementation of
+      <p class="sidebar-text">What you're seeing is an implementation of
         <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">
           Conway's Game of Life
         </a>, or just "Life" for short.
       </p>
       <p class="sidebar-text">
-        It's a type of <a href="https://en.wikipedia.org/wiki/Cellular_automaton">cellular automata</a>,
+        It's a type of <a href="https://en.wikipedia.org/wiki/Cellular_automaton" target="_blank">cellular automata</a>,
         which basically just means a grid of cells that are either alive or dead based on
         certain rules. For every "tick" in the cycle, each cell will either live or die depending
         upon how many alive or dead cells surround it.
@@ -47,6 +47,13 @@
         <button id="play-button">Autoplay</button>
         <!-- Added stop button to stop the autoplay -->
         <button id="stop-button">Stop</button>
+      </div>
+    </div>
+
+    <div id="controls-container">
+      <div class="slider">
+        <label for="tick-rate">Speed</label>
+        <input type="range" id="tick-rate" min="0" max="550" step="25" value="275">
       </div>
     </div>
   

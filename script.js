@@ -17,11 +17,14 @@ let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
 let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
-let tickRate = 100; // Time in ms between each tick
+const tickRateBase = 600 // Base from which tickRate will be subtracted
+let tickRateReductor = 250 // Amount to reduce tickRateBase by to get tickRate
+let tickRate = (tickRateBase - tickRateReductor); // Time in ms between each tick
 
 const gridContainer = document.querySelector('#grid-container');
 const playButton = document.querySelector('#play-button');
 const stopButton = document.querySelector('#stop-button');
+const tickRateSlider = document.querySelector('#tick-rate');
 
 const GameFactory = () => {
     const gameStates = ["paused", "running"];
@@ -125,13 +128,20 @@ const GameFactory = () => {
         timer = 0;
         };
     };
+    const changeTickRate = () => {
+        tickRateReductor = tickRateSlider.value;
+        tickRate = (tickRateBase - tickRateReductor);
+        if (timer !== 0) {
+            stop();
+            play();
+        };
+    }
 
-    return {gridRows, createGameGrid, play, stop};
+    return {gridRows, createGameGrid, play, stop, changeTickRate};
 };
 
 const game = GameFactory();
 game.createGameGrid();
-// Added autoplay button interval function
 playButton.addEventListener('click', game.play);
-// Add event listener for stop button
 stopButton.addEventListener('click', game.stop);
+tickRateSlider.addEventListener('input', game.changeTickRate);
