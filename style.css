@@ -10,6 +10,7 @@
     --pop-color-dark: #BCD678;
     --alive-color: #DEEDB6;
     --dead-color: #52443D;
+    --range-thumb-size: 16px;
 }
 
 @font-face {
@@ -79,7 +80,7 @@ body {
 #page-container {
     height: 100vh;
     display: grid;
-    grid-template-columns: minmax(300px, 500px) max-content minmax(250px, 1fr);
+    grid-template-columns: minmax(300px, 500px) max-content minmax(max-content, 1fr);
     grid-template-rows: 75px max-content 1fr;
     grid-template-areas: 
         "header header header"
@@ -205,6 +206,43 @@ button:active {
 #controls-container {
     background-color: var(--main-color-light);
     margin: 20px;
+    padding: 10px;
+    grid-area: controls;
+    display: flex;
+    justify-content: center;
+}
+
+.slider-container {
+    width: max-content;
+}
+
+input[type="range"] {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    height: 6px;
+    width: 175px;
+    border-radius: 3px;
+    background: var(--main-color);
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    height: var(--range-thumb-size);
+    width: var(--range-thumb-size);
+    border-radius: calc(var(--range-thumb-size) / 2);
+    background-color: var(--dead-color);
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+    border: 1px solid var(--base-color-opposite);
+    outline: 3px solid var(--base-color-opposite);
+    outline-offset: 2px;
 }
 
 footer {
