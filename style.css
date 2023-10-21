@@ -79,7 +79,7 @@ body {
 #page-container {
     height: 100vh;
     display: grid;
-    grid-template-columns: minmax(300px, 500px) 1fr minmax(250px, 350px);
+    grid-template-columns: minmax(300px, 500px) max-content minmax(250px, 1fr);
     grid-template-rows: 75px max-content 1fr;
     grid-template-areas: 
         "header header header"
@@ -200,6 +200,11 @@ button:hover {
 button:active {
     transform: scale(0.98);
     background-color: var(--pop-color);
+}
+
+#controls-container {
+    background-color: var(--main-color-light);
+    margin: 20px;
 }
 
 footer {

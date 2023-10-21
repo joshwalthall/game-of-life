@@ -25,15 +25,14 @@ let generationNumber = 0; // Increments with each tick
 const generationCounter = document.querySelector('#generation-counter');
 const gridContainer = document.querySelector('#grid-container');
 const startStopButton = document.querySelector('#start-stop-button');
-const playButton = document.querySelector('#play-button');
-const stopButton = document.querySelector('#stop-button');
+const resetButton = document.querySelector('#reset-button');
 const tickRateSlider = document.querySelector('#tick-rate');
 
 const GameFactory = () => {
     let gridRows = [];
     let timer = 0;
 
-    const createGameGrid = () => {
+    const _createGameGrid = () => {
         // Set grid container rows and columns amounts and sizes
         gridContainer.style.gridTemplateRows = `repeat(${gridCount}, ${gridTileSize})`;
         gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, ${gridTileSize})`;
@@ -124,20 +123,20 @@ const GameFactory = () => {
         if (timer === 0) {
             timer = setInterval(_tick, tickRate);
         };
+        startStopButton.textContent = 'Stop';
     };
     const _stop = () => {
         if (timer !== 0) {
         clearInterval(timer);
         timer = 0;
         };
+        startStopButton.textContent = 'Start';
     };
     const startStop = () => {
         if (timer === 0) {
             _play();
-            startStopButton.textContent = 'Stop';
         } else if (timer !== 0) {
             _stop();
-            startStopButton.textContent = 'Start';
         }
     };
     const changeTickRate = () => {
@@ -147,12 +146,20 @@ const GameFactory = () => {
             _stop();
             _play();
         };
-    }
+    };
+    const reset = () => {
+        _stop();
+        _createGameGrid();
+        generationNumber = 0;
+        generationCounter.textContent = generationNumber;
+        changeTickRate();
+    };    
 
-    return {gridRows, createGameGrid, startStop, changeTickRate};
+    return {gridRows, startStop, changeTickRate, reset};
 };
 
 const game = GameFactory();
-game.createGameGrid();
-startStopButton.addEventListener('click', game.startStop)
+game.reset();
+startStopButton.addEventListener('click', game.startStop);
+resetButton.addEventListener('click', game.reset);
 tickRateSlider.addEventListener('input', game.changeTickRate);
