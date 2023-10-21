@@ -181,10 +181,10 @@ header {
 }
 
 button {
-    width: 115px;
+    width: 125px;
     height: 45px;
     border: none;
-    border-radius: 30px;
+    border-radius: 15px;
     background-color: var(--pop-color);
     color: var(--base-color-opposite);
     font-family: 'Dosis';

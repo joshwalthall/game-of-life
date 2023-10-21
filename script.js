@@ -25,19 +25,18 @@ let generationNumber = 0; // Increments with each tick
 const generationCounter = document.querySelector('#generation-counter');
 const gridContainer = document.querySelector('#grid-container');
 const startStopButton = document.querySelector('#start-stop-button');
-const resetButton = document.querySelector('#reset-button');
+const regenerateButton = document.querySelector('#regenerate-button');
 const tickRateSlider = document.querySelector('#tick-rate');
 
 const GameFactory = () => {
     let gridRows = [];
     let timer = 0;
 
-    const _createGameGrid = () => {
-        // Set grid container rows and columns amounts and sizes
+    const _setGridCellCount = () => {
         gridContainer.style.gridTemplateRows = `repeat(${gridCount}, ${gridTileSize})`;
         gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, ${gridTileSize})`;
-        gridRows = [];
-        // Iterate through each row
+    };
+    const _createGameGrid = () => {
         for (y = 1; y <= gridCount; y++) {
             let gridRow = [];
             for (x = 1; x <= gridCount; x++) {
@@ -47,18 +46,29 @@ const GameFactory = () => {
                 cellTile.style.width = gridTileSize;
                 cellTile.style.height = gridTileSize;
                 cellTile.classList.add('cell-tile');
-                let randomNumber = Math.random();
-                if (randomNumber > lifeChance) {
-                    cellTile.classList.add('dead');
-                    gridValue.push(0);
-                } else if (randomNumber <= lifeChance) {
-                    cellTile.classList.add('alive');
-                    gridValue.push(1);
-                };
                 gridContainer.appendChild(cellTile);
                 gridRow.push(gridValue);
             };
             gridRows.push(gridRow);
+        };
+    };
+    const _populateGameGrid = () => {
+        for (y = 0; y < gridCount; y++) {
+            let gridRow = gridRows[y]; // Get row by grid y index
+            for (x = 0; x < gridCount; x++) {
+                let cell = gridRow[x]; // Get cell by row x index
+                let cellTile = cell[0];
+                let randomNumber = Math.random();
+                if (randomNumber > lifeChance) {
+                    cell[1] = 0;
+                    cellTile.classList.remove('alive');
+                    cellTile.classList.add('dead');
+                } else if (randomNumber <= lifeChance) {
+                    cell[1] = 1;
+                    cellTile.classList.remove('dead');
+                    cellTile.classList.add('alive');
+                };
+            };
         };
     };
     const _countLiveNeighbors = (rowPos, colPos) => {
@@ -132,6 +142,11 @@ const GameFactory = () => {
         };
         startStopButton.textContent = 'Start';
     };
+    const setupInitialGrid = () => {
+        _setGridCellCount();
+        _createGameGrid();
+        _populateGameGrid();
+    };
     const startStop = () => {
         if (timer === 0) {
             _play();
@@ -147,19 +162,20 @@ const GameFactory = () => {
             _play();
         };
     };
-    const reset = () => {
-        _stop();
-        _createGameGrid();
+    const regenerate = () => {
+        if (timer !== 0) {
+            _stop();
+        };
+        _populateGameGrid();
         generationNumber = 0;
         generationCounter.textContent = generationNumber;
-        changeTickRate();
-    };    
+    };
 
-    return {gridRows, startStop, changeTickRate, reset};
+    return {gridRows, setupInitialGrid, startStop, changeTickRate, regenerate};
 };
 
 const game = GameFactory();
-game.reset();
+game.setupInitialGrid();
 startStopButton.addEventListener('click', game.startStop);
-resetButton.addEventListener('click', game.reset);
+regenerateButton.addEventListener('click', game.regenerate);
 tickRateSlider.addEventListener('input', game.changeTickRate);
