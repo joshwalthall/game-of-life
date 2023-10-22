@@ -80,12 +80,12 @@ body {
 #page-container {
     height: 100vh;
     display: grid;
-    grid-template-columns: minmax(300px, 500px) max-content minmax(max-content, 1fr);
+    grid-template-columns: minmax(300px, 500px) 1fr;
     grid-template-rows: 75px max-content 1fr;
     grid-template-areas: 
-        "header header header"
-        "sidebar game-container controls"
-        "footer footer footer";
+        "header header"
+        "sidebar game-container"
+        "footer footer";
 }
 
 header {
@@ -154,8 +154,9 @@ header {
     justify-self: start;
     display: grid;
     gap: 10px;
-    grid-template-rows: max-content 1fr;
+    grid-template-rows: max-content max-content 1fr;
     grid-template-columns: max-content;
+    justify-items: center;
 }
 
 #generation-container {
@@ -176,9 +177,16 @@ header {
     background-color: var(--dead-color);
 }
 
-#buttons-container {
+#controls-container {
     justify-self: center;
     align-self: center;
+    display: flex;
+    gap: 30px;
+}
+
+#buttons-container {
+    display: flex;
+    gap: 10px;
 }
 
 button {
@@ -203,17 +211,15 @@ button:active {
     background-color: var(--pop-color);
 }
 
-#controls-container {
-    background-color: var(--main-color-light);
-    margin: 20px;
-    padding: 10px;
-    grid-area: controls;
-    display: flex;
-    justify-content: center;
-}
-
 .slider-container {
     width: max-content;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--base-color);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
 }
 
 input[type="range"] {
@@ -223,7 +229,7 @@ input[type="range"] {
     height: 6px;
     width: 175px;
     border-radius: 3px;
-    background: var(--main-color);
+    background: var(--main-color-dark);
 }
 
 input[type="range"]:focus {
@@ -236,12 +242,12 @@ input[type="range"]::-webkit-slider-thumb {
     height: var(--range-thumb-size);
     width: var(--range-thumb-size);
     border-radius: calc(var(--range-thumb-size) / 2);
-    background-color: var(--dead-color);
+    background-color: var(--main-color-lighter);
 }
 
 input[type="range"]:focus::-webkit-slider-thumb {
-    border: 1px solid var(--base-color-opposite);
-    outline: 3px solid var(--base-color-opposite);
+    border: 1px solid var(--main-color-lighter);
+    outline: 3px solid var(--main-color-lighter);
     outline-offset: 2px;
 }
 

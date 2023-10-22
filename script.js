@@ -10,7 +10,7 @@ const neighborTranslations = [
 ];
 
 let gridCount = 128; // Number of x and y grid squares
-let gridContainerSize = 700; // Will be converted to size in pixels
+let gridContainerSize = 600; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`; // Size of each cell in pixels
 let lifeChance = 0.3; // Odds of randomly generated cell being alive
 let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
