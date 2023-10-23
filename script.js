@@ -12,7 +12,7 @@ const neighborTranslations = [
 let gridCount = 128; // Number of x and y grid squares
 let gridContainerSize = 600; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`; // Size of each cell in pixels
-let lifeChance = 0.3; // Odds of randomly generated cell being alive
+let lifeChance = 0.25; // Odds of randomly generated cell being alive
 let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
@@ -27,6 +27,11 @@ const gridContainer = document.querySelector('#grid-container');
 const startStopButton = document.querySelector('#start-stop-button');
 const regenerateButton = document.querySelector('#regenerate-button');
 const tickRateSlider = document.querySelector('#tick-rate');
+const regenDialog = document.querySelector('#regen-dialog');
+const regenForm = document.querySelector('#regen-form');
+const lifeChanceDisplay = document.querySelector('#life-chance-display');
+const confirmRegenButton = document.querySelector('#confirm-regen-button');
+const cancelRegenButton = document.querySelector('#cancel-regen-button');
 
 const GameFactory = () => {
     let gridRows = [];
@@ -166,16 +171,27 @@ const GameFactory = () => {
         if (timer !== 0) {
             _stop();
         };
+        regenDialog.showModal();
         _populateGameGrid();
         generationNumber = 0;
         generationCounter.textContent = generationNumber;
     };
+    const cancelRegen = () => {
+        regenDialog.close();
+    };
 
-    return {gridRows, setupInitialGrid, startStop, changeTickRate, regenerate};
+    return {
+        gridRows,
+        setupInitialGrid,
+        startStop,
+        changeTickRate,
+        regenerate,
+        cancelRegen};
 };
 
 const game = GameFactory();
 game.setupInitialGrid();
 startStopButton.addEventListener('click', game.startStop);
 regenerateButton.addEventListener('click', game.regenerate);
+cancelRegenButton.addEventListener('click', game.cancelRegen);
 tickRateSlider.addEventListener('input', game.changeTickRate);
