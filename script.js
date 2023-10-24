@@ -13,10 +13,15 @@ let gridCount = 128; // Number of x and y grid squares
 let gridContainerSize = 600; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`; // Size of each cell in pixels
 let lifeChance = 0.25; // Odds of randomly generated cell being alive
+const defaultLifeChance = 0.25;
 let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
+const defaultMinSurvival = 2;
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
+const defaultMaxSurvival = 3;
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
+const defaultMinBirth = 3;
 let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
+const defaultMaxBirth = 3;
 const tickRateBase = 600 // Base from which tickRate will be subtracted
 let tickRateReductor = 250 // Amount to reduce tickRateBase by to get tickRate
 let tickRate = (tickRateBase - tickRateReductor); // Time in ms between each tick
@@ -176,8 +181,11 @@ const GameFactory = () => {
     };
     const regenerate = (submitEvent) => {
         submitEvent.preventDefault();
-        let newLifeChance = document.getElementById('life-chance').value;
-        lifeChance = (newLifeChance / 100);
+        lifeChance = (Number(document.getElementById('life-chance').value) / 100);
+        minSurvival = Number(document.getElementById('min-survival').value);
+        maxSurvival = Number(document.getElementById('max-survival').value);
+        minBirth = Number(document.getElementById('min-birth').value);
+        maxBirth = Number(document.getElementById('max-birth').value);
         _populateGameGrid();
         generationNumber = 0;
         generationCounter.textContent = generationNumber;

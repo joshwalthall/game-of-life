@@ -251,7 +251,18 @@ input[type="range"]:focus::-webkit-slider-thumb {
     outline-offset: 2px;
 }
 
-.form-container {
+dialog {
+    padding: 25px;
+    border: 3px solid var(--base-color-opposite);
+    border-radius: 5px;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.30);
+}
+
+#form-container {
     width: 400px;
     display: flex;
     flex-direction: column;
@@ -260,8 +271,19 @@ input[type="range"]:focus::-webkit-slider-thumb {
     align-items: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#form-buttons-container {
+    margin-top: 30px;
+}
+
 menu {
     padding-inline-start: 0px;
+    margin-block: 0px;
 }
 
 footer {
