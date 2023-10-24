@@ -251,6 +251,19 @@ input[type="range"]:focus::-webkit-slider-thumb {
     outline-offset: 2px;
 }
 
+.form-container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+}
+
+menu {
+    padding-inline-start: 0px;
+}
+
 footer {
     grid-area: footer;
     background-color: var(--base-color-opposite);

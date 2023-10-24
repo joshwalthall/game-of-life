@@ -29,6 +29,7 @@ const regenerateButton = document.querySelector('#regenerate-button');
 const tickRateSlider = document.querySelector('#tick-rate');
 const regenDialog = document.querySelector('#regen-dialog');
 const regenForm = document.querySelector('#regen-form');
+const lifeChanceSlider = document.querySelector('#life-chance');
 const lifeChanceDisplay = document.querySelector('#life-chance-display');
 const confirmRegenButton = document.querySelector('#confirm-regen-button');
 const cancelRegenButton = document.querySelector('#cancel-regen-button');
@@ -167,14 +168,23 @@ const GameFactory = () => {
             _play();
         };
     };
-    const regenerate = () => {
+    const showRegenDialog = () => {
         if (timer !== 0) {
             _stop();
         };
         regenDialog.showModal();
+    };
+    const regenerate = (submitEvent) => {
+        submitEvent.preventDefault();
+        let newLifeChance = document.getElementById('life-chance').value;
+        lifeChance = (newLifeChance / 100);
         _populateGameGrid();
         generationNumber = 0;
         generationCounter.textContent = generationNumber;
+        regenDialog.close();
+    };
+    const updateLifeChanceText = () => {
+        lifeChanceDisplay.textContent = lifeChanceSlider.value;
     };
     const cancelRegen = () => {
         regenDialog.close();
@@ -185,13 +195,17 @@ const GameFactory = () => {
         setupInitialGrid,
         startStop,
         changeTickRate,
+        showRegenDialog,
         regenerate,
+        updateLifeChanceText,
         cancelRegen};
 };
 
 const game = GameFactory();
 game.setupInitialGrid();
+tickRateSlider.addEventListener('click', game.changeTickRate);
 startStopButton.addEventListener('click', game.startStop);
-regenerateButton.addEventListener('click', game.regenerate);
+regenerateButton.addEventListener('click', game.showRegenDialog);
+lifeChanceSlider.addEventListener('input', game.updateLifeChanceText);
+confirmRegenButton.addEventListener('click', game.regenerate);
 cancelRegenButton.addEventListener('click', game.cancelRegen);
-tickRateSlider.addEventListener('input', game.changeTickRate);
