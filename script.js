@@ -175,6 +175,14 @@ const GameFactory = () => {
         };
         startStopButton.textContent = 'Start';
     };
+    const _updateInputDisplay = (input, display) => {
+        let displayText = '';
+        displayText = `${input.value}`;
+        if (display.classList.contains('percentage')) {
+            displayText += '%';
+        };
+        display.textContent = displayText;
+    };
     const setupInitialGrid = () => {
         _setGridCellCount();
         _createGameGrid();
@@ -213,15 +221,24 @@ const GameFactory = () => {
         generationCounter.textContent = generationNumber;
         regenDialog.close();
     };
-    const addInputListeners = (input, index) => {
+    const addDisplayUpdaters = (input, index) => {
         input.addEventListener('input', () => {
-            let displayElement = regenDisplays[index];
-            let displayText = '';
-            displayText = regenInputs[index].value;
-            if (displayElement.classList.contains('percentage')) {
-                displayText += '%';
+            let display = regenDisplays[index];
+            _updateInputDisplay(input, display);
+        });
+    };
+    const setMinMaxLimiters = (minInput, minDisplay, maxInput, maxDisplay) => {
+        minInput.addEventListener('input', () => {
+            if (minInput.value > maxInput.value) {
+                minInput.value = maxInput.value;
+                _updateInputDisplay(minInput, minDisplay);
             };
-            displayElement.textContent = displayText;
+        });
+        maxInput.addEventListener('input', () => {
+            if (maxInput.value < minInput.value) {
+                maxInput.value = minInput.value;
+                _updateInputDisplay(maxInput, maxDisplay);
+            };
         });
     };
     const cancelRegen = () => {
@@ -235,7 +252,8 @@ const GameFactory = () => {
         changeTickRate,
         showRegenDialog,
         regenerate,
-        addInputListeners,
+        addDisplayUpdaters,
+        setMinMaxLimiters,
         cancelRegen};
 };
 
@@ -244,6 +262,8 @@ game.setupInitialGrid();
 tickRateSlider.addEventListener('input', game.changeTickRate);
 startStopButton.addEventListener('click', game.startStop);
 regenerateButton.addEventListener('click', game.showRegenDialog);
-regenInputs.forEach(game.addInputListeners);
+regenInputs.forEach(game.addDisplayUpdaters);
+game.setMinMaxLimiters(minSurvivalSlider, minSurvivalDisplay, maxSurvivalSlider, maxSurvivalDisplay);
+game.setMinMaxLimiters(minBirthSlider, minBirthDisplay, maxBirthSlider, maxBirthDisplay);
 confirmRegenButton.addEventListener('click', game.regenerate);
 cancelRegenButton.addEventListener('click', game.cancelRegen);
