@@ -272,9 +272,10 @@ dialog::backdrop {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr max-content 2rem;
     gap: 5px;
+    align-items: center;
 }
 
 #form-buttons-container {

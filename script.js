@@ -192,7 +192,7 @@ const GameFactory = () => {
         regenDialog.close();
     };
     const updateLifeChanceText = () => {
-        lifeChanceDisplay.textContent = lifeChanceSlider.value;
+        lifeChanceDisplay.textContent = `${lifeChanceSlider.value}%`;
     };
     const cancelRegen = () => {
         regenDialog.close();

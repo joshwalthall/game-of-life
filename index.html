@@ -58,72 +58,46 @@
     <dialog id="regen-dialog">
       <div id="form-container">
         <form action="" id="regen-form" method="dialog">
-          <div class="form-row">
-            <label for="life-chance">Starting Life Frequency</label>
-            <input type="range"
-              id="life-chance"
-              name="life-chance"
-              min="5"
-              max="85"
-              value="25">
-            <span id="life-chance-display">25</span><span>%</span>
-          </div>
-          <div class="form-row">
-            <select name="min-survival" id="min-survival">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-            <label for="min-survival">Minimum survival neighbors</label>
-          </div>
-          <div class="form-row">
-            <select name="max-survival" id="max-survival">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-            <label for="max-survival">Maximum survival neighbors</label>
-          </div>
-          <div class="form-row">
-            <select name="min-birth" id="min-birth">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-            <label for="min-birth">Minimum birth neighbors</label>
-          </div>
-          <div class="form-row">
-            <select name="max-birth" id="max-birth">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-            <label for="max-birth">Maximum birth neighbors</label>
-          </div>
+          <label for="life-chance">Starting Life Frequency</label>
+          <input type="range"
+            id="life-chance"
+            name="life-chance"
+            min="5"
+            max="85"
+            value="25">
+          <span id="life-chance-display">25%</span>
+          <label for="min-survival">Min Survival Neighbors</label>
+          <input type="range"
+            id="min-survival"
+            name="min-survival"
+            min="0"
+            max="8"
+            value="2">
+          <span id="min-survival-display">2</span>
+          <label for="max-survival">Max Survival Neighbors</label>
+          <input type="range"
+            id="max-survival"
+            name="max-survival"
+            min="0"
+            max="8"
+            value="3">
+            <span id="max-survival-display">3</span>
+          <label for="min-birth">Min Birth Neighbors</label>
+          <input type="range"
+            id="min-birth"
+            name="min-birth"
+            min="0"
+            max="8"
+            value="3">
+            <span id="min-birth-display">3</span>
+          <label for="max-birth">Max Birth Neighbors</label>
+          <input type="range"
+            id="max-birth"
+            name="max-birth"
+            min="0"
+            max="8"
+            value="3">
+            <span id="max-birth-display">3</span>
         </form>
         <menu id="form-buttons-container">
           <button type="submit" id="confirm-regen-button" form="regen-form">Confirm</button>
