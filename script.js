@@ -36,8 +36,30 @@ const regenDialog = document.querySelector('#regen-dialog');
 const regenForm = document.querySelector('#regen-form');
 const lifeChanceSlider = document.querySelector('#life-chance');
 const lifeChanceDisplay = document.querySelector('#life-chance-display');
+const minSurvivalSlider = document.querySelector('#min-survival');
+const minSurvivalDisplay = document.querySelector('#min-survival-display');
+const maxSurvivalSlider = document.querySelector('#max-survival');
+const maxSurvivalDisplay = document.querySelector('#max-survival-display');
+const minBirthSlider = document.querySelector('#min-birth');
+const minBirthDisplay = document.querySelector('#min-birth-display');
+const maxBirthSlider = document.querySelector('#max-birth');
+const maxBirthDisplay = document.querySelector('#max-birth-display');
 const confirmRegenButton = document.querySelector('#confirm-regen-button');
 const cancelRegenButton = document.querySelector('#cancel-regen-button');
+const regenInputs = [
+    lifeChanceSlider,
+    minSurvivalSlider,
+    maxSurvivalSlider,
+    minBirthSlider,
+    maxBirthSlider,
+];
+const regenDisplays = [
+    lifeChanceDisplay,
+    minSurvivalDisplay,
+    maxSurvivalDisplay,
+    minBirthDisplay,
+    maxBirthDisplay,
+];
 
 const GameFactory = () => {
     let gridRows = [];
@@ -191,8 +213,16 @@ const GameFactory = () => {
         generationCounter.textContent = generationNumber;
         regenDialog.close();
     };
-    const updateLifeChanceText = () => {
-        lifeChanceDisplay.textContent = `${lifeChanceSlider.value}%`;
+    const addInputListeners = (input, index) => {
+        input.addEventListener('input', () => {
+            let displayElement = regenDisplays[index];
+            let displayText = '';
+            displayText = regenInputs[index].value;
+            if (displayElement.classList.contains('percentage')) {
+                displayText += '%';
+            };
+            displayElement.textContent = displayText;
+        });
     };
     const cancelRegen = () => {
         regenDialog.close();
@@ -205,15 +235,15 @@ const GameFactory = () => {
         changeTickRate,
         showRegenDialog,
         regenerate,
-        updateLifeChanceText,
+        addInputListeners,
         cancelRegen};
 };
 
 const game = GameFactory();
 game.setupInitialGrid();
-tickRateSlider.addEventListener('click', game.changeTickRate);
+tickRateSlider.addEventListener('input', game.changeTickRate);
 startStopButton.addEventListener('click', game.startStop);
 regenerateButton.addEventListener('click', game.showRegenDialog);
-lifeChanceSlider.addEventListener('input', game.updateLifeChanceText);
+regenInputs.forEach(game.addInputListeners);
 confirmRegenButton.addEventListener('click', game.regenerate);
 cancelRegenButton.addEventListener('click', game.cancelRegen);
