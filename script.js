@@ -12,16 +12,11 @@ const neighborTranslations = [
 let gridCount = 128; // Number of x and y grid squares
 let gridContainerSize = 600; // Will be converted to size in pixels
 let gridTileSize = `${gridContainerSize / gridCount}px`; // Size of each cell in pixels
-let lifeChance = 0.25; // Odds of randomly generated cell being alive
-const defaultLifeChance = 0.25;
+let lifeChance = 0.20; // Odds of randomly generated cell being alive
 let minSurvival = 2; // Minimum alive neighbors for cell to stay alive
-const defaultMinSurvival = 2;
 let maxSurvival = 3; // Maximum alive neighbors for cell to stay alive
-const defaultMaxSurvival = 3;
 let minBirth = 3; // Minimum alive neighbors for dead cell to come to life
-const defaultMinBirth = 3;
 let maxBirth = 3; // Maximum alive neighbors for dead cell to come to life
-const defaultMaxBirth = 3;
 const tickRateBase = 600 // Base from which tickRate will be subtracted
 let tickRateReductor = 250 // Amount to reduce tickRateBase by to get tickRate
 let tickRate = (tickRateBase - tickRateReductor); // Time in ms between each tick
@@ -45,6 +40,7 @@ const minBirthDisplay = document.querySelector('#min-birth-display');
 const maxBirthSlider = document.querySelector('#max-birth');
 const maxBirthDisplay = document.querySelector('#max-birth-display');
 const confirmRegenButton = document.querySelector('#confirm-regen-button');
+const defaultRegenButton = document.querySelector('#restore-regen-defaults');
 const cancelRegenButton = document.querySelector('#cancel-regen-button');
 const regenInputs = [
     lifeChanceSlider,
@@ -60,6 +56,14 @@ const regenDisplays = [
     minBirthDisplay,
     maxBirthDisplay,
 ];
+const defaultRegenValues = [
+    20, // Percent of cells that start out alive
+    2, // Minimum number of neighbors for survival
+    3, // Maximum number of neighbors for survival
+    3, // Minimum number of neighbors for birth
+    3, // Maximum number of neighbors for birth
+];
+let savedInputValues = defaultRegenValues;
 
 const GameFactory = () => {
     let gridRows = [];
@@ -183,6 +187,20 @@ const GameFactory = () => {
         };
         display.textContent = displayText;
     };
+    const _saveInputValues = () => {
+        savedInputValues = [];
+        for (let i = 0; i < regenInputs.length; i++) {
+            savedInputValues.push(regenInputs[i].value);
+        };
+    };
+    const _resetInputValuesToSaved = () => {
+        for (let i = 0; i < regenInputs.length; i++) {
+            let input = regenInputs[i];
+            let display = regenDisplays[i];
+            input.value = savedInputValues[i];
+            _updateInputDisplay(input, display);
+        };
+    };
     const setupInitialGrid = () => {
         _setGridCellCount();
         _createGameGrid();
@@ -207,6 +225,7 @@ const GameFactory = () => {
         if (timer !== 0) {
             _stop();
         };
+        _resetInputValuesToSaved();
         regenDialog.showModal();
     };
     const regenerate = (submitEvent) => {
@@ -219,6 +238,7 @@ const GameFactory = () => {
         _populateGameGrid();
         generationNumber = 0;
         generationCounter.textContent = generationNumber;
+        _saveInputValues();
         regenDialog.close();
     };
     const addDisplayUpdaters = (input, index) => {
@@ -241,7 +261,18 @@ const GameFactory = () => {
             };
         });
     };
+    const resetInputValuesToDefault = () => {
+        for (let i = 0; i < regenInputs.length; i++) {
+            let input = regenInputs[i];
+            let display = regenDisplays[i];
+            input.value = defaultRegenValues[i];
+            _updateInputDisplay(input, display);
+        };
+        _saveInputValues();
+        showRegenDialog();
+    };
     const cancelRegen = () => {
+        _resetInputValuesToSaved();
         regenDialog.close();
     };
 
@@ -254,7 +285,9 @@ const GameFactory = () => {
         regenerate,
         addDisplayUpdaters,
         setMinMaxLimiters,
-        cancelRegen};
+        resetInputValuesToDefault,
+        cancelRegen,
+    };
 };
 
 const game = GameFactory();
@@ -266,4 +299,5 @@ regenInputs.forEach(game.addDisplayUpdaters);
 game.setMinMaxLimiters(minSurvivalSlider, minSurvivalDisplay, maxSurvivalSlider, maxSurvivalDisplay);
 game.setMinMaxLimiters(minBirthSlider, minBirthDisplay, maxBirthSlider, maxBirthDisplay);
 confirmRegenButton.addEventListener('click', game.regenerate);
+defaultRegenButton.addEventListener('click', game.resetInputValuesToDefault);
 cancelRegenButton.addEventListener('click', game.cancelRegen);

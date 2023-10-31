@@ -255,6 +255,10 @@ dialog {
     padding: 25px;
     border: 3px solid var(--base-color-opposite);
     border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--base-color);
+    background-color: var(--main-color);
 }
 
 dialog::backdrop {
@@ -263,7 +267,7 @@ dialog::backdrop {
 }
 
 #form-container {
-    width: 400px;
+    width: 450px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -274,7 +278,8 @@ dialog::backdrop {
 form {
     display: grid;
     grid-template-columns: 1fr max-content 2rem;
-    gap: 5px;
+    row-gap: 20px;
+    column-gap: 10px;
     align-items: center;
 }
 
